@@ -56,17 +56,12 @@ public class Intake extends SubsystemBase{
         intake.set(supplier);
     }
 
-    public void autoIntake() {
-        if(isNote()) {
-            intake.set(1);
-          }
-          else {
-            intake.set(1);
-          }
+    public void runIntake(double speed) {
+        intake.set(speed);
         }
     
-        public void stopIntake() {
-            intake.set(0);
+    public void stopIntake() {
+        intake.set(0);
     }
 
     public boolean isNote() {

@@ -150,21 +150,19 @@ public class RobotContainer {
   private final Telemetry logger = new Telemetry(MaxSpeed);
 
   public RobotContainer(){
-   
-
-  configureButtonBindings();
-
     // Register Named Commands
-    NamedCommands.registerCommand("intake", intake);
-    NamedCommands.registerCommand("shootSubwoofer", shootSubwoofer);
-    NamedCommands.registerCommand("shootpodium", shootPodium);
-    NamedCommands.registerCommand("armInside", new RunArmClosedLoop(m_arm, ArmConstants.kStowPos));
+    // NamedCommands.registerCommand("intake", intake);
+    // NamedCommands.registerCommand("shootSubwoofer", shootSubwoofer);
+    // NamedCommands.registerCommand("shootpodium", shootPodium);
+    // NamedCommands.registerCommand("armInside", new RunArmClosedLoop(m_arm, ArmConstants.kStowPos));
     // NamedCommands.registerCommand("homePort", new HomeClimber(m_portClimber));
     // NamedCommands.registerCommand("homeStarboard", new HomeClimber(m_starboardClimber));
-    NamedCommands.registerCommand("armDown", new RunArmClosedLoop(m_arm, ArmConstants.kIntakePos));
+    // NamedCommands.registerCommand("armDown", new RunArmClosedLoop(m_arm, ArmConstants.kIntakePos));
     NamedCommands.registerCommand("armToIntake", new ArmToTarget(m_arm, 0));
-
-
+    NamedCommands.registerCommand("armToSpeaker", new ArmToTarget(m_arm, .05));
+    NamedCommands.registerCommand("autoIntake", new IntakeNoteAutomatic(m_intake).withTimeout(2));
+    NamedCommands.registerCommand("runShooter", new RunShooterAtVelocity(m_shooter, 1).withTimeout(3));
+    NamedCommands.registerCommand("shootNote", new RunIntakeOpenLoop(m_intake, 1).withTimeout(1));
     // Build an auto chooser. This will use Commands.none() as the default option.
     autoChooser = AutoBuilder.buildAutoChooser();
 
@@ -182,6 +180,7 @@ public class RobotContainer {
     // m_portClimber.setDefaultCommand(new HoldClimber(m_portClimber));
     // m_starboardClimber.setDefaultCommand(new HoldClimber(m_starboardClimber));
     // m_Climber.setDefaultCommand(new HoldClimber(m_Climber));
+    configureButtonBindings();
 
   }
 
@@ -233,10 +232,12 @@ public class RobotContainer {
     operatorXboxController.start().whileTrue(new Warning("¡OVERRIDE!"));
     operatorXboxController.rightBumper().whileTrue(new RunArm(m_arm, ArmConstants.kManualSpeed))
       .onFalse(new RunArm(m_arm, 0));
-    operatorXboxController.rightTrigger().whileTrue(forceReverse);
+    operatorXboxController.rightTrigger().whileTrue(new RunCommand(()-> m_intake.runIntake(-1), m_intake))
+     .onFalse(new RunCommand(() -> m_intake.stopIntake(), m_intake));
     operatorXboxController.leftBumper().whileTrue(new RunArm(m_arm, -ArmConstants.kManualSpeed))
       .onFalse(new RunArm(m_arm, 0));
-    operatorXboxController.leftTrigger().whileTrue(new IntakeNoteAutomatic(m_intake));
+    operatorXboxController.leftTrigger().whileTrue(new RunCommand(()-> m_intake.runIntake(1), m_intake))
+     .onFalse(new RunCommand(() -> m_intake.stopIntake(), m_intake));
     operatorXboxController.b().whileTrue(new ArmToTarget(m_arm, .20));
     operatorXboxController.x().whileTrue(new RunCommand(() ->
     m_shooter.runOpenLoop(1), m_shooter));
