@@ -1,0 +1,31 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 15.69,
+      "y": 3.03
+    },
+    "rotation": 0.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "redTest1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "redTest2"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "redTests",
+  "choreoAuto": false
+}
