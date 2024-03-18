@@ -9,12 +9,15 @@ import frc.robot.subsystems.Shooter;
 
 public class RunShooterAtVelocity extends Command {
   private Shooter shooter;
-  private double setpoint;
+  private double topSpeed;
+  private double bottomSpeed;
+
   private boolean end;
   /** Creates a new RunShooterAtVelocity. */
-  public RunShooterAtVelocity(Shooter launchingDevice, double velocity) {
+  public RunShooterAtVelocity(Shooter launchingDevice, double topPercent, double bottomPercent) {
     shooter = launchingDevice;
-    setpoint = velocity;
+    topSpeed = topPercent;
+    bottomSpeed = bottomPercent;
     end = false;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(launchingDevice);
@@ -29,13 +32,13 @@ public class RunShooterAtVelocity extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooter.runOpenLoop(setpoint);
+    shooter.runOpenLoop(topSpeed, bottomSpeed);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    
+    shooter.runOpenLoop(0,0);
     }
 
   // Returns true when the command should end.

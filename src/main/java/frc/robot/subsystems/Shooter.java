@@ -69,9 +69,9 @@ public class Shooter extends SubsystemBase{
         //System.out.println(setpoint + " " + top.getOutputCurrent());
     }
 
-    public void runOpenLoop(double speed) {
-        top.set(speed);
-        bottom.set(speed);
+    public void runOpenLoop(double topSpeed, double bottomSpeed) {
+        top.set(topSpeed);
+        bottom.set(bottomSpeed);
     }
     public void stop() {
         top.set(0);

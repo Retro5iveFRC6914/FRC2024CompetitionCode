@@ -74,7 +74,7 @@ public class Arm extends SubsystemBase{
         //declares new cancoder       
         encoder = new CANcoder(21);
         // creates current limit for motors
-        m_currentLimits.SupplyCurrentLimit = 40;
+        m_currentLimits.SupplyCurrentLimit = 140;
         TalonFXConfigs.CurrentLimits = m_currentLimits;
         //set current limit for left motor
         LeftTalonFXConfigurator.apply(m_currentLimits); 

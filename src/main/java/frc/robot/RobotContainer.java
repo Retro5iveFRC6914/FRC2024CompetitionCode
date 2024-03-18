@@ -122,20 +122,20 @@ public class RobotContainer {
     // new HomeClimber(m_starboardClimber)
   );
 
-  ParallelCommandGroup forceFeed = new ParallelCommandGroup(
-    new RunIntakeOpenLoop(m_intake, IntakeConstants.kReverseSpeed),
-    new RunShooterAtVelocity(m_shooter, ShooterConstants.kAmpSpeed)
-  );
+  // ParallelCommandGroup forceFeed = new ParallelCommandGroup(
+  //   new RunIntakeOpenLoop(m_intake, IntakeConstants.kReverseSpeed),
+  //   new RunShooterAtVelocity(m_shooter, ShooterConstants.kAmpSpeed)
+  // );
   
   ParallelCommandGroup forceReverse = new ParallelCommandGroup(
     new RunIntakeOpenLoop(m_intake, -IntakeConstants.kReverseSpeed)
     //new RunShooterAtVelocity(m_shooter, -ShooterConstants.kAmpSpeed)
   );
 
-  SequentialCommandGroup amp = new SequentialCommandGroup(
-    new RunArmClosedLoop(m_arm, ArmConstants.kBackAmpPos),
-    forceFeed
-  );
+  // SequentialCommandGroup amp = new SequentialCommandGroup(
+  //   new RunArmClosedLoop(m_arm, ArmConstants.kBackAmpPos),
+  //   forceFeed
+  // );
 
     
   private double MaxSpeed = TunerConstants.kSpeedAt12VoltsMps; // kSpeedAt12VoltsMps desired top speed
@@ -158,11 +158,11 @@ public class RobotContainer {
     // NamedCommands.registerCommand("homePort", new HomeClimber(m_portClimber));
     // NamedCommands.registerCommand("homeStarboard", new HomeClimber(m_starboardClimber));
     // NamedCommands.registerCommand("armDown", new RunArmClosedLoop(m_arm, ArmConstants.kIntakePos));
-    NamedCommands.registerCommand("armToIntake", new ArmToTarget(m_arm, 0));
-    NamedCommands.registerCommand("armToSpeaker", new ArmToTarget(m_arm, .05));
-    NamedCommands.registerCommand("autoIntake", new IntakeNoteAutomatic(m_intake).withTimeout(2));
-    NamedCommands.registerCommand("runShooter", new RunShooterAtVelocity(m_shooter, 1).withTimeout(3));
-    NamedCommands.registerCommand("shootNote", new RunIntakeOpenLoop(m_intake, 1).withTimeout(1));
+    NamedCommands.registerCommand("armToIntake", new ArmToTarget(m_arm, 0).withTimeout(2));
+    NamedCommands.registerCommand("armToSpeaker", new ArmToTarget(m_arm, .0375).withTimeout(3));
+    NamedCommands.registerCommand("autoIntake", new IntakeNoteAutomatic(m_intake));
+    NamedCommands.registerCommand("runShooter", new RunShooterAtVelocity(m_shooter, .75, 1).withTimeout(2.5));
+    NamedCommands.registerCommand("shootNote", new RunIntakeOpenLoop(m_intake, 1).withTimeout(1.5));
     // Build an auto chooser. This will use Commands.none() as the default option.
     autoChooser = AutoBuilder.buildAutoChooser();
 
@@ -176,7 +176,7 @@ public class RobotContainer {
     // Subsystem Default Commands
     m_intake.setDefaultCommand(new HoldIntake(m_intake));
     // m_arm.setDefaultCommand(new HoldArm(m_arm));
-    m_shooter.setDefaultCommand(new RunShooterAtVelocity(m_shooter, /*ShooterConstants.kIdleSpeed*/0));
+    m_shooter.setDefaultCommand(new RunShooterAtVelocity(m_shooter,0, 0));
     // m_portClimber.setDefaultCommand(new HoldClimber(m_portClimber));
     // m_starboardClimber.setDefaultCommand(new HoldClimber(m_starboardClimber));
     // m_Climber.setDefaultCommand(new HoldClimber(m_Climber));
@@ -236,11 +236,13 @@ public class RobotContainer {
      .onFalse(new RunCommand(() -> m_intake.stopIntake(), m_intake));
     operatorXboxController.leftBumper().whileTrue(new RunArm(m_arm, -ArmConstants.kManualSpeed))
       .onFalse(new RunArm(m_arm, 0));
-    operatorXboxController.leftTrigger().whileTrue(new RunCommand(()-> m_intake.runIntake(1), m_intake))
-     .onFalse(new RunCommand(() -> m_intake.stopIntake(), m_intake));
+    // operatorXboxController.leftTrigger().whileTrue(new RunCommand(()-> m_intake.runIntake(1), m_intake))
+    //  .onFalse(new RunCommand(() -> m_intake.stopIntake(), m_intake));
+    operatorXboxController.leftTrigger().onTrue(new IntakeNoteAutomatic(m_intake));
     operatorXboxController.b().whileTrue(new ArmToTarget(m_arm, .20));
     operatorXboxController.x().whileTrue(new RunCommand(() ->
-    m_shooter.runOpenLoop(1), m_shooter));
+    m_shooter.runOpenLoop(.75,1), m_shooter));
+    operatorXboxController.a().onTrue(new ArmToTarget(m_arm, 0));
 
   
     driverXboxController.povUp().onTrue(new InstantCommand(() -> m_Climber.runOpenLoop(ClimberConstants.kManualSpeed)));   

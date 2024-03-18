@@ -12,15 +12,15 @@
     "data": {
       "commands": [
         {
-          "type": "named",
-          "data": {
-            "name": "armToSpeaker"
-          }
-        },
-        {
           "type": "parallel",
           "data": {
             "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "armToSpeaker"
+                }
+              },
               {
                 "type": "named",
                 "data": {
@@ -34,7 +34,7 @@
                     {
                       "type": "wait",
                       "data": {
-                        "waitTime": 1.0
+                        "waitTime": 1.75
                       }
                     },
                     {
@@ -50,9 +50,41 @@
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "armToIntake"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "armToIntake"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "autoIntake"
+                }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 1.0
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "Center Piece"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
           }
         },
         {
@@ -60,24 +92,11 @@
           "data": {
             "commands": [
               {
-                "type": "path",
+                "type": "named",
                 "data": {
-                  "pathName": "Center Piece"
+                  "name": "armToSpeaker"
                 }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "armToSpeaker"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
+              },
               {
                 "type": "named",
                 "data": {
@@ -91,7 +110,7 @@
                     {
                       "type": "wait",
                       "data": {
-                        "waitTime": 1.0
+                        "waitTime": 1.75
                       }
                     },
                     {
@@ -107,27 +126,53 @@
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "armToIntake"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Amp-Side Piece"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "armToSpeaker"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "armToIntake"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "autoIntake"
+                }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 1.0
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "Stage-Side Piece"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
           }
         },
         {
           "type": "parallel",
           "data": {
             "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "armToSpeaker"
+                }
+              },
               {
                 "type": "named",
                 "data": {
@@ -141,7 +186,7 @@
                     {
                       "type": "wait",
                       "data": {
-                        "waitTime": 1.0
+                        "waitTime": 1.75
                       }
                     },
                     {
@@ -157,27 +202,53 @@
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "armToIntake"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Stage-Side Piece"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "armToSpeaker"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "armToIntake"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "autoIntake"
+                }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 1.0
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "Amp-Side Piece"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
           }
         },
         {
           "type": "parallel",
           "data": {
             "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "armToSpeaker"
+                }
+              },
               {
                 "type": "named",
                 "data": {
@@ -191,7 +262,7 @@
                     {
                       "type": "wait",
                       "data": {
-                        "waitTime": 1.0
+                        "waitTime": 1.75
                       }
                     },
                     {
