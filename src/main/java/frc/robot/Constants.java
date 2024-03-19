@@ -34,7 +34,7 @@ public final class Constants {
     
         //these 2 should be the same
         public static final double kIntakePos = 0.06;
-        public static final double kSubwooferPos = 0.06;
+        public static final double kSpeakerPos = 0.055;
     
         public static final double kFrontAmpPos = 0.15;
     
@@ -68,6 +68,8 @@ public final class Constants {
     
         // init v should be 6.7 m/s for subwoofer at intake pos
     public static final double kSubwooferSpeed = 1259;
+    public static final double kTopSpeed = .5;
+    public static final double kBottomSpeed = .8;
 
     // init v should be 8.2 m/s
     public static final double k3mSpeed = 1500;

@@ -90,52 +90,52 @@ public class RobotContainer {
   //private final JoystickButton robotCentric = new JoystickButton(driverXboxController, XboxController.Button.kA.value);
 
   // Command Groups
-  ParallelCommandGroup feedAndShootSubwoofer = new ParallelCommandGroup(
-    new ShootNote(m_shooter, ShooterConstants.kSubwooferSpeed),
-    new Feed(m_intake)
-  );
-  
-  ParallelCommandGroup feedAndShootPodium = new ParallelCommandGroup(
-    new ShootNote(m_shooter, ShooterConstants.k3mSpeed),
-    new Feed(m_intake)
-  );
-  
-  SequentialCommandGroup shootSubwoofer = new SequentialCommandGroup(
-    new RunArmClosedLoop(m_arm, ArmConstants.kSubwooferPos),
-    new AccelerateShooter(m_shooter, ShooterConstants.kSubwooferSpeed),
-    feedAndShootSubwoofer
-  );
-  
-  SequentialCommandGroup shootPodium = new SequentialCommandGroup(
-    new RunArmClosedLoop(m_arm, ArmConstants.k3mPos),
-    new AccelerateShooter(m_shooter, ShooterConstants.k3mSpeed),
-    feedAndShootPodium
-  );
-  
-  ParallelCommandGroup intake = new ParallelCommandGroup(
-    new IntakeNoteAutomatic(m_intake),
-    new RunArmClosedLoop(m_arm, ArmConstants.kIntakePos)
-  );
-
-  ParallelCommandGroup homeClimbers = new ParallelCommandGroup(
-    // new HomeClimber(m_portClimber),
-    // new HomeClimber(m_starboardClimber)
-  );
-
-  // ParallelCommandGroup forceFeed = new ParallelCommandGroup(
-  //   new RunIntakeOpenLoop(m_intake, IntakeConstants.kReverseSpeed),
-  //   new RunShooterAtVelocity(m_shooter, ShooterConstants.kAmpSpeed)
+  // ParallelCommandGroup feedAndShootSubwoofer = new ParallelCommandGroup(
+  //   new ShootNote(m_shooter, ShooterConstants.kSubwooferSpeed),
+  //   new Feed(m_intake)
   // );
   
-  ParallelCommandGroup forceReverse = new ParallelCommandGroup(
-    new RunIntakeOpenLoop(m_intake, -IntakeConstants.kReverseSpeed)
-    //new RunShooterAtVelocity(m_shooter, -ShooterConstants.kAmpSpeed)
-  );
-
-  // SequentialCommandGroup amp = new SequentialCommandGroup(
-  //   new RunArmClosedLoop(m_arm, ArmConstants.kBackAmpPos),
-  //   forceFeed
+  // ParallelCommandGroup feedAndShootPodium = new ParallelCommandGroup(
+  //   new ShootNote(m_shooter, ShooterConstants.k3mSpeed),
+  //   new Feed(m_intake)
   // );
+  
+  // SequentialCommandGroup shootSubwoofer = new SequentialCommandGroup(
+  //   new RunArmClosedLoop(m_arm, ArmConstants.kSubwooferPos),
+  //   new AccelerateShooter(m_shooter, ShooterConstants.kSubwooferSpeed),
+  //   feedAndShootSubwoofer
+  // );
+  
+  // SequentialCommandGroup shootPodium = new SequentialCommandGroup(
+  //   new RunArmClosedLoop(m_arm, ArmConstants.k3mPos),
+  //   new AccelerateShooter(m_shooter, ShooterConstants.k3mSpeed),
+  //   feedAndShootPodium
+  // );
+  
+  // ParallelCommandGroup intake = new ParallelCommandGroup(
+  //   new IntakeNoteAutomatic(m_intake),
+  //   new RunArmClosedLoop(m_arm, ArmConstants.kIntakePos)
+  // );
+
+  // ParallelCommandGroup homeClimbers = new ParallelCommandGroup(
+  //   // new HomeClimber(m_portClimber),
+  //   // new HomeClimber(m_starboardClimber)
+  // );
+
+  // // ParallelCommandGroup forceFeed = new ParallelCommandGroup(
+  // //   new RunIntakeOpenLoop(m_intake, IntakeConstants.kReverseSpeed),
+  // //   new RunShooterAtVelocity(m_shooter, ShooterConstants.kAmpSpeed)
+  // // );
+  
+  // ParallelCommandGroup forceReverse = new ParallelCommandGroup(
+  //   new RunIntakeOpenLoop(m_intake, -IntakeConstants.kReverseSpeed)
+  //   //new RunShooterAtVelocity(m_shooter, -ShooterConstants.kAmpSpeed)
+  // );
+
+  // // SequentialCommandGroup amp = new SequentialCommandGroup(
+  // //   new RunArmClosedLoop(m_arm, ArmConstants.kBackAmpPos),
+  // //   forceFeed
+  // // );
 
     
   private double MaxSpeed = TunerConstants.kSpeedAt12VoltsMps; // kSpeedAt12VoltsMps desired top speed
@@ -159,7 +159,7 @@ public class RobotContainer {
     // NamedCommands.registerCommand("homeStarboard", new HomeClimber(m_starboardClimber));
     // NamedCommands.registerCommand("armDown", new RunArmClosedLoop(m_arm, ArmConstants.kIntakePos));
     NamedCommands.registerCommand("armToIntake", new ArmToTarget(m_arm, 0).withTimeout(2));
-    NamedCommands.registerCommand("armToSpeaker", new ArmToTarget(m_arm, .055).withTimeout(3));
+    NamedCommands.registerCommand("armToSpeaker", new ArmToTarget(m_arm, ArmConstants.kSpeakerPos).withTimeout(3));
     NamedCommands.registerCommand("autoIntake", new IntakeNoteAutomatic(m_intake));
     NamedCommands.registerCommand("runShooter", new RunShooterAtVelocity(m_shooter, .5, .8).withTimeout(3));
     NamedCommands.registerCommand("shootNote", new RunIntakeOpenLoop(m_intake, 1).withTimeout(1.5));
@@ -236,14 +236,14 @@ public class RobotContainer {
      .onFalse(new RunCommand(() -> m_intake.stopIntake(), m_intake));
     operatorXboxController.leftBumper().whileTrue(new RunArm(m_arm, -ArmConstants.kManualSpeed))
       .onFalse(new RunArm(m_arm, 0));
-    // operatorXboxController.leftTrigger().whileTrue(new RunCommand(()-> m_intake.runIntake(1), m_intake))
+      operatorXboxController.leftTrigger().onTrue(new IntakeNoteAutomatic(m_intake));
+      operatorXboxController.b().onTrue(new RunCommand(() -> m_intake.stopIntake(), m_intake).withTimeout(.2));
+      operatorXboxController.x().whileTrue(new RunShooterAtVelocity(m_shooter, ShooterConstants.kTopSpeed, ShooterConstants.kBottomSpeed));
+      operatorXboxController.a().onTrue(new ArmToTarget(m_arm, ArmConstants.kSpeakerPos));
+    // operatorXboxController.leftTrigger()).whileTrue(new RunCommand(()-> m_intake.runIntake(1), m_intake))
     //  .onFalse(new RunCommand(() -> m_intake.stopIntake(), m_intake));
-    operatorXboxController.leftTrigger().onTrue(new IntakeNoteAutomatic(m_intake));
-    operatorXboxController.b().whileTrue(new ArmToTarget(m_arm, .2324));
-    operatorXboxController.x().whileTrue(new RunCommand(() ->
-    m_shooter.runOpenLoop(.5,1), m_shooter));
-    operatorXboxController.a().onTrue(new ArmToTarget(m_arm, 0));
-
+    // operatorXboxController.a().onTrue(new ArmToTarget(m_arm, 0));
+    // operatorXboxController.b().whileTrue(new ArmToTarget(m_arm, .2324));
   
     driverXboxController.povUp().onTrue(new InstantCommand(() -> m_Climber.runOpenLoop(ClimberConstants.kManualSpeed)));   
     driverXboxController.povDown().onTrue(new InstantCommand(() -> m_Climber.runOpenLoop(-ClimberConstants.kManualSpeed )));
