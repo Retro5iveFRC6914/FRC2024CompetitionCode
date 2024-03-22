@@ -246,10 +246,10 @@ public class RobotContainer {
     // operatorXboxController.a().onTrue(new ArmToTarget(m_arm, 0));
     // operatorXboxController.b().whileTrue(new ArmToTarget(m_arm, .2324));
   
-    driverXboxController.povUp().onTrue(new InstantCommand(() -> m_Climber.runOpenLoop(ClimberConstants.kManualSpeed)));   
-    driverXboxController.povDown().onTrue(new InstantCommand(() -> m_Climber.runOpenLoop(-ClimberConstants.kManualSpeed )));
-    driverXboxController.povUp().onFalse(new InstantCommand(() -> m_Climber.runOpenLoop(0)));   
-    driverXboxController.povDown().onFalse(new InstantCommand(() -> m_Climber.runOpenLoop(0)));
+    driverXboxController.rightTrigger().onTrue(new InstantCommand(() -> m_Climber.runOpenLoop(ClimberConstants.kManualSpeed)));   
+    driverXboxController.leftTrigger().onTrue(new InstantCommand(() -> m_Climber.runOpenLoop(-ClimberConstants.kManualSpeed )));
+    driverXboxController.rightTrigger().onFalse(new InstantCommand(() -> m_Climber.runOpenLoop(0)));   
+    driverXboxController.leftTrigger().onFalse(new InstantCommand(() -> m_Climber.runOpenLoop(0)));
 
   
   }
