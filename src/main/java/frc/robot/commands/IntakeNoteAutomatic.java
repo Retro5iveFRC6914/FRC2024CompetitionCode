@@ -24,7 +24,10 @@ public class IntakeNoteAutomatic extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.runIntake(.5);
+    intake.runIntake(.6
+    
+    
+    );
   }
 
   // Called once the command ends or is interrupted.

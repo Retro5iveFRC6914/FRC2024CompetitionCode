@@ -232,11 +232,12 @@ public class RobotContainer {
     operatorXboxController.start().whileTrue(new Warning("¡OVERRIDE!"));
     operatorXboxController.rightBumper().whileTrue(new RunArm(m_arm, ArmConstants.kManualSpeed))
       .onFalse(new RunArm(m_arm, 0));
-    operatorXboxController.rightTrigger().whileTrue(new RunCommand(()-> m_intake.runIntake(-1), m_intake))
-     .onFalse(new RunCommand(() -> m_intake.stopIntake(), m_intake));
+    operatorXboxController.rightTrigger().whileTrue(new RunCommand(()-> m_intake.runIntake(-1), m_intake));
     operatorXboxController.leftBumper().whileTrue(new RunArm(m_arm, -ArmConstants.kManualSpeed))
       .onFalse(new RunArm(m_arm, 0));
-      operatorXboxController.leftTrigger().onTrue(new IntakeNoteAutomatic(m_intake));
+     // operatorXboxController.leftTrigger().whileTrue(new RunCommand(() -> m_intake.runIntake(1), m_intake));
+      operatorXboxController.y().onTrue(new IntakeNoteAutomatic(m_intake));
+      operatorXboxController.leftTrigger().whileTrue(new RunCommand(() -> m_intake.runIntake(1), m_intake));
       operatorXboxController.b().onTrue(new RunCommand(() -> m_intake.stopIntake(), m_intake).withTimeout(.2));
       operatorXboxController.x().whileTrue(new RunShooterAtVelocity(m_shooter, ShooterConstants.kTopSpeed, ShooterConstants.kBottomSpeed));
       operatorXboxController.a().onTrue(new ArmToTarget(m_arm, ArmConstants.kSpeakerPos));
